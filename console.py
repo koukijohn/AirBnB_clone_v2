@@ -39,12 +39,38 @@ class HBNBCommand(cmd.Cmd):
             Create a new instance of class BaseModel and saves it
             to the JSON file.
         '''
+        ints = {'number_rooms', 'number_bathrooms', 'max_guest', 'price_by_night'}
+        floats = {'latitude', 'longitude'}
+        lists = {'amenity_ids'}
+
         if len(args) == 0:
             print("** class name missing **")
             return
+
         try:
             args = shlex.split(args)
             new_instance = eval(args[0])()
+            for arg in args[1:]:
+                key = arg.split('=')[0]
+                value = arg.split('=')[1]
+
+                # convert '_' to ' ' for storage
+                if '_' in value:
+                    words = value.split('_')
+                    string = ' '.join(words)
+                    value = string
+
+                # cast data type
+                if key in ints:
+                    value = int(value)
+                elif key in floats:
+                    value = float(value)
+                elif key in lists:
+                    value = list(value)
+
+                # set attributes
+                new_instance.__dict__[key] = value
+
             new_instance.save()
             print(new_instance.id)
 
