@@ -31,12 +31,11 @@ class FileStorage:
 
     def delete(self, obj=None):
         '''
-        Deletes obj if it exists
+        This will delete an object from the __objects dictionary.
         '''
-        if obj is None:
-            return
-        FileStorage.__objects = {key: value for key, value in FileStorage.__objects.items() 
-                                 if value.id != obj.id}
+        for key, value in FileStorage.__objects.copy().items():
+            if value == obj:
+                del FileStorage.__objects[key]
 
     def save(self):
         '''
