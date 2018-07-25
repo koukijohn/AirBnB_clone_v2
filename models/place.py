@@ -6,15 +6,15 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from os import getenv
 
-
-class Place(BaseModel):
+class Place(BaseModel, Base):
     '''
         Define the class Place that inherits from BaseModel.
     '''
     __tablename__ = "places"
-    city_id = Column(String(60), ForeignKey("states.id"), nullable=False)
-    user_id = Column(String(60), ForeignKey("states.id"), nullable=False)
+    city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
     number_rooms = Column(Integer, nullable=False, default=0)
@@ -23,3 +23,4 @@ class Place(BaseModel):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True, default=0.0)
     longitude = Column(Float, nullable=True, default=0.0)
+    amenity_ids = []
