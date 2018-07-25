@@ -6,7 +6,6 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from os import getenv
 
 class Place(BaseModel, Base):
     '''
@@ -24,3 +23,10 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True, default=0.0)
     longitude = Column(Float, nullable=True, default=0.0)
     amenity_ids = []
+    reviews = relationship("Review", backref='place', cascade='all, delete-orphan')
+
+    @property
+    def reviews(self):
+        ''' getter for reviews '''
+        review_items = models.storage.all('Reviews').values()
+        return [obj for obj in review_items if obj.place_id == self.id]
