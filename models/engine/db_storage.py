@@ -6,7 +6,7 @@
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
-import os
+from os import getenv
 import models
 from models.city import City
 from models.state import State
@@ -27,20 +27,19 @@ class DBStorage:
         Initializes DBStorage class
         '''
         #get values from environment variables
-        user = os.getenv('HBNB_MYSQL_USER')
-        password = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        database = os.getenv('HBNB_MYSQL_DB')
+        user = getenv('HBNB_MYSQL_USER')
+        password = getenv('HBNB_MYSQL_PWD')
+        host = getenv('HBNB_MYSQL_HOST')
+        database = getenv('HBNB_MYSQL_DB')
         #establish db connection
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                 format(user, password, host, database), pool_pre_ping=True)
         #create tables with metadata
         Base.metadata.create_all(self.__engine)
         #special case for testing
-        if os.getenv('HBNB_ENV') == 'test':
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
-        #start db session
-        Session = sessionmaker(bind=self.__engine)
+        Session = sessionmaker(self.__engine)
         self.__session = Session()
 
     def all(self, cls=None):
@@ -79,7 +78,6 @@ class DBStorage:
         '''
         if obj is not None:
             self.__session.delete(obj)
-            self.save()
 
     def reload(self):
         '''
