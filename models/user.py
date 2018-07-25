@@ -7,6 +7,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
+
 class User(BaseModel, Base):
     '''
         Definition of the User class
