@@ -13,6 +13,17 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models import storage
+
+
+object_dict = {"BaseModel": BaseModel,
+               "State": State,
+               "City": City,
+               "User": User,
+               "Place": Place,
+               "Amenity": Amenity,
+               "Review": Review,
+               }
 
 
 class HBNBCommand(cmd.Cmd):
@@ -39,36 +50,28 @@ class HBNBCommand(cmd.Cmd):
             Create a new instance of class BaseModel and saves it
             to the JSON file.
         '''
-        ints = {'number_rooms', 'number_bathrooms', 'max_guest', 'price_by_night'}
-        floats = {'latitude', 'longitude'}
-        lists = {'amenity_ids'}
 
         if len(args) == 0:
             print("** class name missing **")
             return
-
         try:
             args = shlex.split(args)
-            new_instance = eval(args[0])()
-            for arg in args[1:]:
-                key = arg.split('=')[0]
-                value = arg.split('=')[1]
+            dictionary = {}
+            for x in args[1:]:
+                key = x.split("=")
+                dictionary[key[0]] = key[1]
 
-                # convert '_' to ' ' for storage
-                if '_' in value:
-                    words = value.split('_')
-                    string = ' '.join(words)
-                    value = string
-
-                # cast data type
-                if key in ints:
-                    value = int(value)
-                elif key in floats:
-                    value = float(value)
-                elif key in lists:
-                    value = list(value)
-
-                # set attributes
+            new_instance = object_dict[(args[0])]()
+            for key, value in dictionary.items():
+                if "_" in value:
+                    value = value.replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except BaseException:
+                        pass
+                    if hasattr(new_instance, key):
+                        setattr(new_instance, key, value)
                 new_instance.__dict__[key] = value
 
             new_instance.save()
@@ -89,7 +92,6 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
         try:
@@ -118,7 +120,6 @@ class HBNBCommand(cmd.Cmd):
             return
         class_name = args[0]
         class_id = args[1]
-        storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
         try:
@@ -139,7 +140,6 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        storage = FileStorage()
         storage.reload()
         objects = storage.all()
         try:
@@ -162,7 +162,6 @@ class HBNBCommand(cmd.Cmd):
             Update an instance based on the class name and id
             sent as args.
         '''
-        storage = FileStorage()
         storage.reload()
         args = shlex.split(args)
         if len(args) == 0:
@@ -208,7 +207,6 @@ class HBNBCommand(cmd.Cmd):
             Counts/retrieves the number of instances.
         '''
         obj_list = []
-        storage = FileStorage()
         storage.reload()
         objects = storage.all()
         try:
@@ -239,7 +237,7 @@ class HBNBCommand(cmd.Cmd):
             cmd_arg = args[0] + " " + args[2]
             func = functions[args[1]]
             func(cmd_arg)
-        except:
+        except BaseException:
             print("*** Unknown syntax:", args[0])
 
 
