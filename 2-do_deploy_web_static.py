@@ -36,7 +36,7 @@ def do_deploy(archive_path):
         return False
     archived_file = archive_path.split("/")[1]
     archived_file_no_ext = archived_file.split(".")[0]
-    newest_version = "/data/web_static/releases/" + archived_file
+    newest_version = "/data/web_static/releases/" + archived_file_no_ext
 
     try:
         put(archive_path, "/tmp/")
