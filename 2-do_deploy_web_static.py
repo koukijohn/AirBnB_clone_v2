@@ -41,7 +41,7 @@ def do_deploy(archive_path):
     try:
         put(archive_path, "/tmp/")
         run("sudo mkdir -p {}".format(newest_version))
-        run("sudo tar -zxf /tmp/{} -C {}/".format(archived_file,
+        run("sudo tar -xzf /tmp/{} -C {}/".format(archived_file,
                                                   newest_version))
         run("sudo rm {}".format(archived_file))
         run("sudo mv {}/web_static/* {}".format(newest_version,
