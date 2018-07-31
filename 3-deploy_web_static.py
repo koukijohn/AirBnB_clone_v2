@@ -61,7 +61,8 @@ def deploy():
     """
     """
     try:
-        path = do_pack()
+        our_path = do_pack()
     except Exception:
         return False
-    do_deploy(path)
+    do_deploy(our_path)
+    # must have this work first
