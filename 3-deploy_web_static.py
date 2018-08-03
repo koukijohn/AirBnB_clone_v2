@@ -58,6 +58,6 @@ def deploy():
     This is our deploy function tha calls do_pack and do_deploy.
     """
     path = do_pack()
-    if path is False:
-        return False
-    return do_deploy(path)
+    if path:
+        do_deploy(path)
+    return False
