@@ -1,7 +1,3 @@
-# Synopsis
-
-Creating a static page to use later as a template for the Hbnb project.
-
-```8-index.html``` contains the temporary final result that looks like this:
-
-![Result](/web_static/images/Final.png)
+This repositroy will be covering the AirBnB clone web static portion.
+=====================================================================
+We will be using and manipulating the languages HTML and CSS.

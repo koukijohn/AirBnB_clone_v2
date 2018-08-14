@@ -7,7 +7,6 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
 from os import getenv
-import models
 from models.city import City
 from models.state import State
 from models.amenity import Amenity
@@ -55,7 +54,9 @@ class DBStorage:
                     key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                     all_objects[key] = obj
         else:
+            print(type(cls))
             for obj in self.__session.query(cls).all():
+                print("after")
                 key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                 all_objects[key] = obj
         return(all_objects)
@@ -88,3 +89,11 @@ class DBStorage:
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(Session)
         self.__session = Session
+
+
+    def close(self):
+        '''
+            This will close remove() method on the private session attribute
+            (self.__session) or close() on the class.
+        '''
+        self.__session.remove()
