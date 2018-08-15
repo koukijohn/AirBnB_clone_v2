@@ -54,9 +54,7 @@ class DBStorage:
                     key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                     all_objects[key] = obj
         else:
-            print(type(cls))
-            for obj in self.__session.query(cls).all():
-                print("after")
+            for obj in self.__session.query(eval(cls)).all():
                 key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                 all_objects[key] = obj
         return(all_objects)
