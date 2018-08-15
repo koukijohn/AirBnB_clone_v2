@@ -23,7 +23,7 @@ class State(BaseModel, Base):
     if getenv("HBNB_TYPE_STORAGE") == "db":
         print("db mode")
         name = Column(String(128), nullable=False)
-        cities = relationship('City', back_populates='State',
+        cities = relationship('City', backref='State',
                               cascade='all, delete-orphan')
 
 #    if getenv("HBNB_TYPE_STORAGE") == "db":
@@ -35,15 +35,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             '''Getter for cities'''
-            temporary = []
-            for x in models.storage.all(City).value():
-                if x.state_id == self.id:
-                    temporary.append[x]
-            return temporary
 
-
-#            get_all = models.storage.all('City')
-#            return [obj for obj in get_all if obj.state_id == self.id]
+            get_all = models.storage.all('City')
+            return [obj for obj in get_all if obj.state_id == self.id]
 
 #    def __str__(self):
 #        print(type(models.storage))
