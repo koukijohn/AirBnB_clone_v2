@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """
     This is a script that starts a Flask web application and will display:
-    / will display “Hello HBNB!”, /hbnb will display “HBNB”, /c/<text>
-    will display “C ” followed by value of the text variable w/out a space,
-    /python/<text> will display “Python ”, followed by value of text variable.
+    / will display "Hello HBNB!", /hbnb will display "HBNB", /c/<text>
+    will display "C " followed by value of the text variable w/out a space,
+    /python/<text> will display "Python ", followed by value of text variable.
+    /number/<n> will display "n is a number" only if n is an integer.
 """
 from flask import Flask
 app = Flask(__name__)
