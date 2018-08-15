@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+    This is a script that starts a Flask web application and will display:
+    / will display “Hello HBNB!” and /hbnb will display “HBNB”.
+"""
 from flask import Flask
 app = Flask(__name__)
 
@@ -11,4 +15,5 @@ def hbnb():
     return "HBNB"
 
 
-app.run()
+if __name__ == "__main__":
+    app.run()
