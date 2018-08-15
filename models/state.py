@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
+from models.city import City
 import models
 from os import getenv
 
@@ -16,25 +17,37 @@ class State(BaseModel, Base):
     '''
 
     __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship('City', back_populates='State', cascade='all, delete-orphan')
 
+#  changed placement
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        print("db_mode")
+        print("db mode")
+        name = Column(String(128), nullable=False)
+        cities = relationship('City', back_populates='State',
+                              cascade='all, delete-orphan')
+
+#    if getenv("HBNB_TYPE_STORAGE") == "db":
+#        print("db mode")
     else:
-        print("FileStorage_mode")
+        print("FileStorage mode")
+        name = ""
+
         @property
         def cities(self):
             '''Getter for cities'''
-            get_all = models.storage.all('City')
-            return [obj for obj in get_all if obj.state_id == self.id]
+            temporary = []
+            for x in models.storage.all(City).value():
+                if x.state_id == self.id:
+                    temporary.append[x]
+            return temporary
 
-    def __str__(self):
-        print(type(models.storage))
 
+#            get_all = models.storage.all('City')
+#            return [obj for obj in get_all if obj.state_id == self.id]
 
+#    def __str__(self):
+#        print(type(models.storage))
 
-if __name__ == "__main__":
-    x = State()
-    print(x)
+#  if __name__ == "__main__":
+#    x = State()
+#    print(x)
