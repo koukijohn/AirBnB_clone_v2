@@ -160,9 +160,20 @@ def parse_id(string_id):
 
 @app.route('/hbnb_filters')
 def hbnb_filters():
-    return render_template("10-hbnb_filters.html")
+    all_state = models.storage.all(State).items()
+    all_city = models.storage.all(City).items()
+    result = []
+    for k, v in all_state:
+        city_result = []
+        for a, b in all_city:
+            if v.id == b.state_id:
+                city_result.append((parse_id(a), b.name))
+                city_result.sort(key=lambda tup: tup[1])
+        result.append((parse_id(k), v.name, city_result))
+        result.sort(key=lambda tup: tup[1])
+    return render_template("10-hbnb_filters.html", state_list=result)
 
 
 if __name__ == "__main__":
-    app.run()
-#    app.run(host="0.0.0.0", port=5000)
+#    app.run()
+    app.run(host="0.0.0.0", port=5000)
