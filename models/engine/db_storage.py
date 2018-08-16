@@ -49,6 +49,8 @@ class DBStorage:
         depending of the class name.
         '''
         all_objects = {}
+        if type(cls) == str:
+            cls = eval(cls)
         if cls is None:
             obj_list = [City, State, User, Amenity, Review, Place]
             for cls in obj_list:
@@ -56,7 +58,7 @@ class DBStorage:
                     key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                     all_objects[key] = obj
         else:
-            for obj in self.__session.query(eval(cls)).all():
+            for obj in self.__session.query(cls).all():
                 key = '{}.{}'.format(obj.__class__.__name__, obj.id)
                 all_objects[key] = obj
         return(all_objects)
