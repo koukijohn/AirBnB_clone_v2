@@ -18,7 +18,6 @@ class State(BaseModel, Base):
 
     __tablename__ = "states"
 
-#  changed placement
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         print("db mode")
@@ -26,8 +25,6 @@ class State(BaseModel, Base):
         cities = relationship('City', backref='State',
                               cascade='all, delete-orphan')
 
-#    if getenv("HBNB_TYPE_STORAGE") == "db":
-#        print("db mode")
     else:
         print("FileStorage mode")
         name = ""
@@ -36,12 +33,5 @@ class State(BaseModel, Base):
         def cities(self):
             '''Getter for cities'''
 
-            get_all = models.storage.all('City')
+            get_all = models.storage.all('City').values()
             return [obj for obj in get_all if obj.state_id == self.id]
-
-#    def __str__(self):
-#        print(type(models.storage))
-
-#  if __name__ == "__main__":
-#    x = State()
-#    print(x)

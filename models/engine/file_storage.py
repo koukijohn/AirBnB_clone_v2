@@ -6,6 +6,7 @@ import json
 import models
 
 
+
 class FileStorage:
     '''
         Serializes instances to JSON file and deserializes to JSON file.
@@ -17,7 +18,17 @@ class FileStorage:
         '''
             Return the dictionary
         '''
-        return self.__objects
+        if type(cls) == str:
+            cls = models.classes[cls]
+
+        if cls is None:
+            return self.__objects
+        else:
+            d = {}
+            for k, v in self.__objects.items():
+                if type(v) == cls:
+                    d[k] = v
+            return d
 
     def new(self, obj):
         '''

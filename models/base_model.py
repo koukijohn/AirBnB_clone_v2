@@ -41,14 +41,14 @@ class BaseModel:
             Return string representation of BaseModel class.
         '''
         return ("[{}] ({}) {}".format(self.__class__.__name__,
-                                      self.id, self.__dict__))
+                                      self.id, self.to_dict()))
 
     def __repr__(self):
         '''
             Return string representation of BaseModel class.
         '''
         return ("[{}] ({}) {}".format(self.__class__.__name__,
-                                      self.id, self.__dict__))
+                                      self.id, self.to_dict()))
 
     def save(self):
         '''
