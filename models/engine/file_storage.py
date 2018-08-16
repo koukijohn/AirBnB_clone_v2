@@ -6,7 +6,6 @@ import json
 import models
 
 
-
 class FileStorage:
     '''
         Serializes instances to JSON file and deserializes to JSON file.
@@ -18,7 +17,7 @@ class FileStorage:
         '''
             Return the dictionary
         '''
-        if type(cls) == str:
+        if isinstance(cls, str):
             cls = models.classes[cls]
 
         if cls is None:
@@ -26,7 +25,7 @@ class FileStorage:
         else:
             d = {}
             for k, v in self.__objects.items():
-                if type(v) == cls:
+                if isinstance(v, cls):
                     d[k] = v
             return d
 
@@ -72,7 +71,6 @@ class FileStorage:
                 FileStorage.__objects[key] = class_name(**val)
         except FileNotFoundError:
             pass
-
 
     def close(self):
         '''
