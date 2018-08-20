@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        <H1>States</H1>
+        <UL>
+	  {% for state_id, state, city_dict in state_dict %}
+            <LI>{{state_id}}: <B>{{state}}</B>
+                <UL>
+		    {% for city_id, city in city_dict %}
+                        <LI>{{city_id}}: <B>{{city}}</B></LI>
+		    {% endfor %}
+                </UL>
+	  {% endfor %}
+            </LI>
+
+        </UL>
+    </BODY>
+</HTML>
